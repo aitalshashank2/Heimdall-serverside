@@ -1,4 +1,4 @@
-# Heimdall - Serverside
+# Hiemdall - Serverside
 
 This repository contains code for the server-side application of Heimdall SSH Logging system.
 

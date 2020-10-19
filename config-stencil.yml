@@ -1,1 +1,2 @@
 destination_file: /path/to/the/authorized_keys/file/in/.ssh/directory
+auth_log: <path to the log file where linux keeps auth logs>

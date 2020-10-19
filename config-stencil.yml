@@ -1,2 +1,9 @@
-destination_file: /path/to/the/authorized_keys/file/in/.ssh/directory
-auth_log: <path to the log file where linux keeps auth logs>
+DESTINATION_FILE: /path/to/the/authorized_keys/file/in/.ssh/directory
+AUTH_LOG: <path to the log file where linux keeps auth logs>
+
+MASTER:
+    URL: <url of master>
+	ENDPOINTS:
+		LOGIN: /bipolar/log/login
+		LOGOUT: /bipolar/log/logout
+    SECRET: <secret of the master>

@@ -4,6 +4,8 @@ import subprocess
 import yaml
 import json
 import requests
+import hmac
+import hashlib
 
 with io.open('config.yml', 'r') as stream:
 	try:
@@ -14,6 +16,7 @@ with io.open('config.yml', 'r') as stream:
 
 MASTER_URL = CONFIG_VARS['MASTER']['URL']
 MASTER_ENDPOINTS = CONFIG_VARS['MASTER']['ENDPOINTS']
+MASTER_SECRET = CONFIG_VARS['MASTER']['SECRET']
 
 def login(log):
 	l = log.split()
@@ -29,10 +32,15 @@ def login(log):
 		"port": l[12]
 	}
 
-	# payload = json.dumps(payload)
+	signature  = 'sha1=' + hmac.new(MASTER_SECRET.encode(), json.dumps(payload).encode(), hashlib.sha1).hexdigest()
+
+	headers = {
+		'content-type': 'application/json',
+		'X-Bipolar-Signature': signature,
+	}
 	url = MASTER_URL + MASTER_ENDPOINTS['LOGIN']
 
-	f = requests.post(url, json=payload)
+	f = requests.post(url, json=payload, headers=headers)
 
 
 def logout(log):
@@ -49,10 +57,15 @@ def logout(log):
 		"port": l[11]
 	}
 
-	# payload = json.dumps(payload)
+	signature  = 'sha1=' + hmac.new(MASTER_SECRET.encode(), json.dumps(payload).encode(), hashlib.sha1).hexdigest()
+
+	headers = {
+		'content-type': 'application/json',
+		'X-Bipolar-Signature': signature,
+	}
 	url = MASTER_URL + MASTER_ENDPOINTS['LOGOUT']
 
-	f = requests.post(url, json=payload)
+	f = requests.post(url, json=payload, headers=headers)
 
 def track():
 	

@@ -7,6 +7,7 @@ import requests
 import hmac
 import hashlib
 
+
 with io.open('config.yml', 'r') as stream:
 	try:
 		CONFIG_VARS = yaml.safe_load(stream)
@@ -14,11 +15,13 @@ with io.open('config.yml', 'r') as stream:
 		print(err)
 		raise
 
+
 AUTH_LOG = CONFIG_VARS['AUTH_LOG']
 MASTER_URL = CONFIG_VARS['MASTER']['URL']
 ENDPOINT_LOG = CONFIG_VARS['MASTER']['ENDPOINT_LOG']
 MASTER_SECRET = CONFIG_VARS['MASTER']['SECRET']
 AUTHORIZED_KEYS = CONFIG_VARS['DESTINATION_FILE']
+
 
 def login(log):
 	l = log.split()
@@ -52,15 +55,7 @@ def login(log):
 		"client": client
 	}
 
-	signature  = 'sha1=' + hmac.new(MASTER_SECRET.encode(), json.dumps(payload).encode(), hashlib.sha1).hexdigest()
-
-	headers = {
-		'content-type': 'application/json',
-		'X-Bipolar-Signature': signature,
-	}
-	url = MASTER_URL + ENDPOINT_LOG
-
-	f = requests.post(url, json=payload, headers=headers)
+	send(payload)
 
 
 def logout(log):
@@ -78,6 +73,43 @@ def logout(log):
 		"activity": "LOGOUT_SSH"
 	}
 
+	send(payload)
+
+
+def chusr_open(log):
+	l = log.split()
+	print("CHUSR_OPEN")
+
+	payload = {
+		"month": l[0],
+		"date": l[1],
+		"time": l[2],
+		"host": l[3],
+		"user": l[-3],
+		"activity": "CHUSR_OPEN",
+		"client": l[-1]
+	}
+
+	send(payload)
+
+
+def chusr_close(log):
+	l = log.split()
+	print("CHUSR_CLOSE")
+
+	payload = {
+		"month": l[0],
+		"date": l[1],
+		"time": l[2],
+		"host": l[3],
+		"user": l[-1],
+		"activity": "CHUSR_CLOSE"
+	}
+
+	send(payload)
+
+
+def send(payload):
 	signature  = 'sha1=' + hmac.new(MASTER_SECRET.encode(), json.dumps(payload).encode(), hashlib.sha1).hexdigest()
 
 	headers = {
@@ -87,6 +119,7 @@ def logout(log):
 	url = MASTER_URL + ENDPOINT_LOG
 
 	f = requests.post(url, json=payload, headers=headers)
+
 
 def track():
 
@@ -99,5 +132,10 @@ def track():
 				login(line)
 			elif "Disconnected" in line:
 				logout(line)
+		elif "sudo: pam_unix(sudo:session)" in line:
+			if "opened" in line:
+				chusr_open(line)
+			elif "closed" in line:
+				chusr_close(line)
 
 track()

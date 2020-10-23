@@ -3,7 +3,5 @@ AUTH_LOG: <path to the log file where linux keeps auth logs>
 
 MASTER:
     URL: <url of master>
-	ENDPOINTS:
-		LOGIN: /bipolar/log/login
-		LOGOUT: /bipolar/log/logout
+	ENDPOINT_LOG: /bipolar/log
     SECRET: <secret of the master>

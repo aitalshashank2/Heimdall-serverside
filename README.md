@@ -1,10 +1,17 @@
 # Heimdall - Serverside
 
-This repository contains code for the server-side application of Heimdall SSH Logging system.
+This repository contains code for the server-side applications of Heimdall SSH Logging system.
+
+---
+## Heimdall
+
+Heimdall is a GitHub based server login manager. It uses GitHub to track the SSH Keys and manage the access of the servers.
+
+For more information, please head to [Heimdall](https://github.com/aitalshashank2/Heimdall-Master)
 
 ---
 
-### Setup Instructions
+## Setup Instructions
 
 - Clone this repository.
 - Initialize a virtual environment and install all the necessary packages using ```requirements.txt```
@@ -26,17 +33,8 @@ This repository contains code for the server-side application of Heimdall SSH Lo
 
 - Run ```flask run``` in the directory containing ```server.py```
 
----
+- Detach this terminal session and open a new terminal
 
-### Heimdall-ssh-keys repository setup instructions
+- Run `python track.py` to start listening to the auth logs
 
-- Add an entry in the ```server-mappings.yml``` file for this server.
-- Make a file in the ```servers/``` directory with the same name as in ```server-mappings.yml```
-
-### Working
-
-If someone wants access to your ssh server, all he/she has to do is make a PR on "Heimdall-ssh-keys" after uploading his/her Public Key in the "public-keys" folder and entering the name of the file containing the Public Key to that corresponding server's file in the ```servers/``` directory.
-
----
-
-#### Happy Hacking
+- Serverside is up and running now.

@@ -1,3 +1,4 @@
-.env/
-__pycache__
-config.yml
+.env
+*.pyc
+code/configuration/config.yml
+.venv

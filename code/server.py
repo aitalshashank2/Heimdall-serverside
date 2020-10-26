@@ -3,7 +3,7 @@ import io
 import yaml
 import json
 
-with io.open('config.yml', 'r') as stream:
+with io.open('configuration/config.yml', 'r') as stream:
     data_loaded = yaml.safe_load(stream)
 
 destination_file = data_loaded["DESTINATION_FILE"]

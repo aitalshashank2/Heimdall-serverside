@@ -8,7 +8,7 @@ import hmac
 import hashlib
 
 
-with io.open('configuration/config.yml', 'r') as stream:
+with io.open('../configuration/config.yml', 'r') as stream:
 	try:
 		CONFIG_VARS = yaml.safe_load(stream)
 	except yaml.YAMLError as err:

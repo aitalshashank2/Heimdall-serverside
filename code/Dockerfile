@@ -13,7 +13,7 @@ RUN mkdir /var/log/supervisord
 WORKDIR /code
 
 COPY requirements.txt /code/
-COPY supervisord.conf /etc/supervisord.conf
+COPY supervisord/supervisord.conf /etc/supervisord.conf
 
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt

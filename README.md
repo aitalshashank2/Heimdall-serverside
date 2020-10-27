@@ -7,34 +7,63 @@ This repository contains code for the server-side applications of Heimdall SSH L
 
 Heimdall is a GitHub based server login manager. It uses GitHub to track the SSH Keys and manage the access of the servers.
 
-For more information, please head to [Heimdall](https://github.com/aitalshashank2/Heimdall-Master)
+For more information, please head to [Heimdall - Master](https://github.com/aitalshashank2/Heimdall-Master)
 
 ---
 
 ## Setup Instructions
 
 - Clone this repository.
-- Initialize a virtual environment and install all the necessary packages using ```requirements.txt```
-	```pip install -r requirements.txt```
 
-- Set environment variables for flask
-	```
-	export FLASK_APP=server
-	export FLASK_ENV=development
+- Go into the folder.
+	```bash
+	cd Heimdall-serverside
 	```
 
-- You can change the FLASK_ENV according to your needs.
-- Copy ```config-stencil.yml``` to ```config.yml```.
-
-- Now, set the environment variable in ```config.yml``` as follows:
-	```
-	destination_file: path/to/the/authorized_keys/file/in/the/.ssh/directory/
+- Copy `.env-stencil` to `.env`
+	```bash
+	cp .env-stencil .env
 	```
 
-- Run ```flask run``` in the directory containing ```server.py```
+- Change the variables in `.env` according to the system configuration
+	```
+	AUTH= # path to the auth logs of your system (/var/log/auth.log in ubuntu)
+	AUTHORIZED_KEYS= # path to the file containing authorized keys of the ssh server (~/.ssh/authorized_keys in ubuntu)
+	```
 
-- Detach this terminal session and open a new terminal
+- Go into the `configuration` directory in the `code` directory
+	```bash
+	cd code/configuration
+	```
 
-- Run `python track.py` to start listening to the auth logs
+- Copy `config-stencil.yml` to `config.yml`
+	```bash
+	cp config-stencil.yml config.yml
+	```
 
-- Serverside is up and running now.
+- Change the `config.yml` to the configurations of your system and **Heimdall - Master**
+	```yml
+	DESTINATION_FILE: /mounts/authorized_keys # DO NOT CHANGE
+	AUTH_LOG: /mounts/auth.log # DO NOT CHANGE
+
+	MASTER:
+		URL: # URL of Heimdall - Master
+		ENDPOINT_LOG: /bipolar/log # DO NOT CHANGE
+		SECRET: # Secret that will be used by master to validate log requests
+	```
+
+- Build docker images
+	```bash
+	cd ../..
+	docker-compose build
+	```
+
+- Use the following command to start the server
+	```bash
+	docker-compose up -d
+	```
+
+- Use the following command to stop the server
+	```bash
+	docker-compose down
+	```

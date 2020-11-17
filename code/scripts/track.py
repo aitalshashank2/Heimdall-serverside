@@ -130,9 +130,9 @@ def track():
 		if "sshd" in line:
 			if "Accepted" in line:
 				login(line)
-			elif "Disconnected" in line:
+			elif "Disconnected from user" in line:
 				logout(line)
-		elif "su: pam_unix(su:session)" in line:
+		elif "pam_unix(su:session)" in line:
 			if "opened" in line:
 				chusr_open(line)
 			elif "closed" in line:
